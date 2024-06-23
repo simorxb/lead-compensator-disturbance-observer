@@ -11,7 +11,7 @@ s = tf('s');
 P = 1/(s*(m*s + k));
 
 % Lead compensator parameters
-kl = 19;
+kl = 14.76;
 tau_p = 0.1;
 tau_z = 1.5;
 
@@ -22,12 +22,19 @@ C_L = kl * (tau_z * s + 1) / (tau_p * s + 1);
 G_L = feedback(C_L * P, 1);
 
 % Print G_L poles
-pole(G_L)
+disp('Poles of the closed-loop transfer function:');
+poles = pole(G_L);
+disp(poles);
 
 % Plot root locus for lead compensator
 figure;
 rlocus(C_L * P);
 title('Root Locus with Lead Compensator');
+
+% Add current poles to root-locus
+hold on;
+plot(real(poles), imag(poles), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+hold off;
 
 % Plot Bode diagram for lead compensator
 figure;
